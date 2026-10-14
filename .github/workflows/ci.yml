@@ -1,8 +1,8 @@
 name: First deployment
-on: Push
+on: push
 jobs: 
   lint:
   runs-on: ubuntu-latest
   steps: 
-    name: print random name
-    run: echo "samuel"
+    - name: print random name
+      run: echo "samuel"
