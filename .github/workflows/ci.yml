@@ -34,4 +34,19 @@ jobs:
 
       - name: Run the test
         run: npm run test
+build:
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Checkout your branch
+        uses: actions/checkout@v4
 
+      - name: Then install Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22.x
+
+      - name: Then install dependencies
+        run: npm ci
+
+      - name: build the application 
+        run: npm run build
