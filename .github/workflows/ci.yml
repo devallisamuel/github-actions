@@ -4,5 +4,16 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps: 
-      - name: print random name
-        run: echo "samuel"
+      - name: Checkout your branch
+        uses: actions/checkout@v4
+
+      - name: Then install Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22.x
+
+      - name: Then install dependencies
+        run: npm ci
+      - name: Run the npm lint
+        run: npm run lint
+
