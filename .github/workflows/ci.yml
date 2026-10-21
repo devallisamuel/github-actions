@@ -6,7 +6,11 @@ jobs:
     steps: 
       - name: Checkout your branch
         uses: actions/checkout@v4
-
+      - name: Cache local npm
+        uses: actions/cache@v6
+        with:
+          path: ~/.npm
+          key: deps-node-module-${{ hashFiles('**/package-lock.json') }}
       - name: Then install Node.js
         uses: actions/setup-node@v6
         with:
@@ -23,6 +27,11 @@ jobs:
     steps: 
       - name: Checkout your branch
         uses: actions/checkout@v4
+      - name: Cache local npm
+        uses: actions/cache@v6
+        with:
+          path: ~/.npm
+          key: deps-node-module-${{ hashFiles('**/package-lock.json') }}
 
       - name: Then install Node.js
         uses: actions/setup-node@v6
@@ -44,7 +53,12 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: 22.x
-
+      - name: Cache local npm
+        uses: actions/cache@v6
+        with:
+          path: ~/.npm
+          key: deps-node-module-${{ hashFiles('**/package-lock.json') }}
+          
       - name: Then install dependencies
         run: npm ci
 
