@@ -45,6 +45,8 @@ jobs:
         run: npm run test
   build:
     runs-on: ubuntu-latest
+    outputs: 
+      build_version: ${{ steps.metadata.outputs.version }}
     steps: 
       - name: Checkout your branch
         uses: actions/checkout@v4
@@ -64,3 +66,33 @@ jobs:
 
       - name: build the application 
         run: npm run build
+      - name: test output
+        id: metadata
+        run: echo "version=1.0.0" >> "$GITHUB_OUTPUT"
+      - name: Upload build output
+        uses: actions/upload-artifact@v4
+        with:
+          name: nest-build
+          path: dist/
+          if-no-files-found: error
+          continue-on-error: true
+          retention-days: 7
+  download-build:
+    env:
+      DUMMY_SECRET: DUMMY_SECRET
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download build output
+        uses: actions/download-artifact@v4
+        with:
+          name: nest-build
+          path: dist/
+
+      - name: Verify downloaded build
+        run: test -f dist/main.js
+      - name: Print secret
+        run: echo $DUMMY_SECRET
+      - name: Use build output
+        run: |
+          echo "Build version is ${{ needs.build.outputs.build_version }}"
