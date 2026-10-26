@@ -1,0 +1,8 @@
+name: Reusable jobs
+on: workflow_call
+jobs: 
+  npm:
+    runs-on: ubuntu-latest
+    steps:
+      - name: install packages
+        run: npm ci

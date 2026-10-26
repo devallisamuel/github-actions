@@ -96,3 +96,7 @@ jobs:
       - name: Use build output
         run: |
           echo "Build version is ${{ needs.build.outputs.build_version }}"
+
+  reusable:
+      runs-on: ubuntu-latest
+      uses: ./.github/workflows/reusable.yml
