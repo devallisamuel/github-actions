@@ -4,5 +4,11 @@ jobs:
   npm:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout your branch
+        uses: actions/checkout@v4
+      - name: Then install Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22.x
       - name: install packages
         run: npm ci

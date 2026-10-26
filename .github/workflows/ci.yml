@@ -24,6 +24,9 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20.x, 22.x]
     steps: 
       - name: Checkout your branch
         uses: actions/checkout@v4
@@ -36,13 +39,17 @@ jobs:
       - name: Then install Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 22.x
+          node-version: ${{ matrix.node-version }}
 
       - name: Then install dependencies
         run: npm ci
 
       - name: Run the test
         run: npm run test
+
+      - name: Print Node 22 diagnostics
+        if: matrix.node-version == '22.x'
+        run: node --version
   build:
     runs-on: ubuntu-latest
     outputs: 
@@ -81,6 +88,7 @@ jobs:
     env:
       DUMMY_SECRET: DUMMY_SECRET
     needs: build
+    if: needs.build.outputs.build_version == '1.0.0'
     runs-on: ubuntu-latest
     steps:
       - name: Download build output
@@ -99,4 +107,5 @@ jobs:
 
   reusable:
       runs-on: ubuntu-latest
+      needs: download-build
       uses: ./.github/workflows/reusable.yml
